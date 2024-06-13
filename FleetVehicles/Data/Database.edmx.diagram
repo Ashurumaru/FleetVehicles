@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b69638468b6243f2baa6de18b7ca37f4" Name="Diagram1">
+        <EntityTypeShape EntityType="FleetVehiclesModel.AdditionalService" Width="1.5" PointX="8.25" PointY="0.75" />
+        <EntityTypeShape EntityType="FleetVehiclesModel.BodyType" Width="1.5" PointX="0.75" PointY="15.375" />
+        <EntityTypeShape EntityType="FleetVehiclesModel.CarBrand" Width="1.5" PointX="1.5" PointY="12.875" />
+        <EntityTypeShape EntityType="FleetVehiclesModel.CarColor" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="FleetVehiclesModel.CarModel" Width="1.5" PointX="0.75" PointY="8.625" />
+        <EntityTypeShape EntityType="FleetVehiclesModel.Cars" Width="1.5" PointX="3" PointY="9.5" />
+        <EntityTypeShape EntityType="FleetVehiclesModel.Customers" Width="1.5" PointX="6" PointY="13.875" />
+        <EntityTypeShape EntityType="FleetVehiclesModel.Employees" Width="1.5" PointX="3" PointY="4" />
+        <EntityTypeShape EntityType="FleetVehiclesModel.FleetCars" Width="1.5" PointX="5.25" PointY="4.125" />
+        <EntityTypeShape EntityType="FleetVehiclesModel.InsurancePolicy" Width="1.5" PointX="7.5" PointY="9.375" />
+        <EntityTypeShape EntityType="FleetVehiclesModel.OrderAdditionalService" Width="1.5" PointX="10.5" PointY="4.5" />
+        <EntityTypeShape EntityType="FleetVehiclesModel.Orders" Width="1.5" PointX="8.25" PointY="3.625" />
+        <EntityTypeShape EntityType="FleetVehiclesModel.Position" Width="1.5" PointX="0.75" PointY="4.875" />
+        <EntityTypeShape EntityType="FleetVehiclesModel.sysdiagrams" Width="1.5" PointX="9.75" PointY="9.25" />
+        <EntityTypeShape EntityType="FleetVehiclesModel.Tariff" Width="1.5" PointX="6" PointY="1.375" />
+        <AssociationConnector Association="FleetVehiclesModel.FK__OrderAddi__IdAdd__1EA48E88" />
+        <AssociationConnector Association="FleetVehiclesModel.FK__Cars__IdBody__02FC7413" />
+        <AssociationConnector Association="FleetVehiclesModel.FK__CarModel__IdBran__7F2BE32F" />
+        <AssociationConnector Association="FleetVehiclesModel.FK_FleetCars_CarColor" />
+        <AssociationConnector Association="FleetVehiclesModel.FK__Cars__IdModel__02084FDA" />
+        <AssociationConnector Association="FleetVehiclesModel.FK_FleetCars_Cars" />
+        <AssociationConnector Association="FleetVehiclesModel.FK__Orders__IdCustom__18EBB532" />
+        <AssociationConnector Association="FleetVehiclesModel.FK__Employees__IdPos__0F624AF8" />
+        <AssociationConnector Association="FleetVehiclesModel.FK_FleetCars_Employees" />
+        <AssociationConnector Association="FleetVehiclesModel.FK_Orders_Employees" />
+        <AssociationConnector Association="FleetVehiclesModel.FK_InsurancePolicy_FleetCars" />
+        <AssociationConnector Association="FleetVehiclesModel.FK__OrderAddi__IdOrd__1F98B2C1" />
+        <AssociationConnector Association="FleetVehiclesModel.FK__Orders__IdTariff__1AD3FDA4" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
