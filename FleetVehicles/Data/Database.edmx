@@ -305,6 +305,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_FleetCars">
+          <End Role="FleetCars" Type="Self.FleetCars" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FleetCars">
+              <PropertyRef Name="IdFleetCar" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="IdFleetCar" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -404,6 +416,10 @@
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_FleetCars" Association="Self.FK_Orders_FleetCars">
+            <End Role="FleetCars" EntitySet="FleetCars" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -499,6 +515,10 @@
             <End Role="FleetCars" EntitySet="FleetCars" />
             <End Role="InsurancePolicy" EntitySet="InsurancePolicy" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_FleetCars" Association="FleetVehiclesModel.FK_Orders_FleetCars">
+            <End Role="FleetCars" EntitySet="FleetCars" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
           <AssociationSet Name="FK__OrderAddi__IdOrd__1F98B2C1" Association="FleetVehiclesModel.FK__OrderAddi__IdOrd__1F98B2C1">
             <End Role="Orders" EntitySet="Orders" />
             <End Role="OrderAdditionalService" EntitySet="OrderAdditionalService" />
@@ -507,7 +527,7 @@
             <End Role="Tariff" EntitySet="Tariff" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -616,6 +636,7 @@
           <NavigationProperty Name="Cars" Relationship="FleetVehiclesModel.FK_FleetCars_Cars" FromRole="FleetCars" ToRole="Cars" />
           <NavigationProperty Name="Employees" Relationship="FleetVehiclesModel.FK_FleetCars_Employees" FromRole="FleetCars" ToRole="Employees" />
           <NavigationProperty Name="InsurancePolicy" Relationship="FleetVehiclesModel.FK_InsurancePolicy_FleetCars" FromRole="FleetCars" ToRole="InsurancePolicy" />
+          <NavigationProperty Name="Orders" Relationship="FleetVehiclesModel.FK_Orders_FleetCars" FromRole="FleetCars" ToRole="Orders" />
         </EntityType>
         <EntityType Name="InsurancePolicy">
           <Key>
@@ -659,6 +680,7 @@
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Customers" Relationship="FleetVehiclesModel.FK__Orders__IdCustom__18EBB532" FromRole="Orders" ToRole="Customers" />
           <NavigationProperty Name="Employees" Relationship="FleetVehiclesModel.FK_Orders_Employees" FromRole="Orders" ToRole="Employees" />
+          <NavigationProperty Name="FleetCars" Relationship="FleetVehiclesModel.FK_Orders_FleetCars" FromRole="Orders" ToRole="FleetCars" />
           <NavigationProperty Name="OrderAdditionalService" Relationship="FleetVehiclesModel.FK__OrderAddi__IdOrd__1F98B2C1" FromRole="Orders" ToRole="OrderAdditionalService" />
           <NavigationProperty Name="Tariff" Relationship="FleetVehiclesModel.FK__Orders__IdTariff__1AD3FDA4" FromRole="Orders" ToRole="Tariff" />
         </EntityType>
@@ -821,6 +843,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_FleetCars">
+          <End Type="FleetVehiclesModel.FleetCars" Role="FleetCars" Multiplicity="0..1" />
+          <End Type="FleetVehiclesModel.Orders" Role="Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FleetCars">
+              <PropertyRef Name="IdFleetCar" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="IdFleetCar" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__OrderAddi__IdOrd__1F98B2C1">
           <End Type="FleetVehiclesModel.Orders" Role="Orders" Multiplicity="0..1" />
           <End Type="FleetVehiclesModel.OrderAdditionalService" Role="OrderAdditionalService" Multiplicity="*" />
@@ -845,7 +879,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1034,7 +1068,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

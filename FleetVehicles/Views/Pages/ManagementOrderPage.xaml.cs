@@ -2,19 +2,9 @@
 using FleetVehicles.Models;
 using FleetVehicles.Views.Cards;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FleetVehicles.Views.Pages
 {
@@ -23,67 +13,135 @@ namespace FleetVehicles.Views.Pages
     /// </summary>
     public partial class ManagementOrderPage : Page
     {
-        private int _currentUserId;
-        public ManagementOrderPage(int currentUserId)
+        private Employees _currentUser;
+        private string _currentUserRole;
+        private int? _employeeIdFilter;
+
+        public ManagementOrderPage(int currentUserId, int? employeeIdFilter)
         {
             InitializeComponent();
+            LoadUser(currentUserId);
+            _employeeIdFilter = employeeIdFilter;
             LoadData();
-            _currentUserId = currentUserId;
         }
 
-        private void LoadData()
+        private void LoadUser(int userId)
         {
             using (var context = new FleetVehiclesEntities())
             {
-                var orders = (from order in context.Orders
-                              join customer in context.Customers on order.IdCustomer equals customer.IdCustomer
-                              join fleetCar in context.FleetCars on order.IdFleetCar equals fleetCar.IdFleetCar
-                              join car in context.Cars on fleetCar.IdCar equals car.IdCar
-                              join driver in context.Employees on fleetCar.IdDriver equals driver.IdEmployee
-                              join dispatcher in context.Employees on order.IdDispatcher equals dispatcher.IdEmployee
-                              join tariff in context.Tariff on order.IdTariff equals tariff.IdTariff
-                              select new
-                              {
-                                  OrderID = order.IdOrder,
-                                  CustomerName = customer.PhoneNumber,
-                                  DateStart = order.DateStart,
-                                  DateEnd = order.DateEnd,
-                                  DepartureAddress = order.DepartureAddress,
-                                  ArrivalAddress = order.ArrivalAddress,
-                                  CarModel = car.CarModel.Name,
-                                  CarBrand = car.CarModel.CarBrand.Name,
-                                  DriverFirstName = driver.FirstName,
-                                  DriverLastName = driver.LastName,
-                                  TotalCost = order.TotalCost,
-                                  DispatcherFirstName = dispatcher.FirstName,
-                                  DispatcherLastName = dispatcher.LastName,
-                                  TariffName = tariff.Name,
-                                  NumberOfPassengers = order.NumberOfPassengers,
-                                  Notes = order.Notes
-                              }).ToList()
-                              .Select(o => new OrderView
-                              {
-                                  OrderID = o.OrderID,
-                                  CustomerName = o.CustomerName,
-                                  DateStart = o.DateStart,
-                                  DateEnd = o.DateEnd,
-                                  DepartureAddress = o.DepartureAddress,
-                                  ArrivalAddress = o.ArrivalAddress,
-                                  Car = o.CarBrand + " " + o.CarModel,
-                                  Driver = o.DriverFirstName + " " + o.DriverLastName,
-                                  TotalCost = (int)o.TotalCost,
-                                  Dispatcher = o.DispatcherFirstName + " " + o.DispatcherLastName,
-                                  Tariff = o.TariffName,
-                                  NumberOfPassengers = (int)o.NumberOfPassengers,
-                                  Notes = o.Notes,
-                                  TripDate = $"{o.DateStart:dd.MM.yyyy HH:mm} - {o.DateEnd:dd.MM.yyyy HH:mm}"
-                              }).ToList();
-
-                OrderList.ItemsSource = orders;
+                var user = context.Employees.SingleOrDefault(e => e.IdEmployee == userId);
+                if (user != null)
+                {
+                    _currentUser = user;
+                    if (_currentUser.IdPosition != 3 && _currentUser.IdPosition != 2)
+                    {
+                        btnCreateOrder.Visibility = Visibility.Hidden;
+                    }
+                }
             }
         }
 
+        private void LoadData(string searchQuery = "")
+        {
+            using (var context = new FleetVehiclesEntities())
+            {
+                var ordersQuery = from order in context.Orders
+                                  join customer in context.Customers on order.IdCustomer equals customer.IdCustomer
+                                  join fleetCar in context.FleetCars on order.IdFleetCar equals fleetCar.IdFleetCar
+                                  join car in context.Cars on fleetCar.IdCar equals car.IdCar
+                                  join driver in context.Employees on fleetCar.IdDriver equals driver.IdEmployee
+                                  join dispatcher in context.Employees on order.IdDispatcher equals dispatcher.IdEmployee
+                                  join tariff in context.Tariff on order.IdTariff equals tariff.IdTariff
+                                  select new
+                                  {
+                                      OrderID = order.IdOrder,
+                                      CustomerName = customer.PhoneNumber,
+                                      DateStart = order.DateStart,
+                                      DateEnd = order.DateEnd,
+                                      DepartureAddress = order.DepartureAddress,
+                                      ArrivalAddress = order.ArrivalAddress,
+                                      CarModel = car.CarModel.Name,
+                                      CarBrand = car.CarModel.CarBrand.Name,
+                                      DriverFirstName = driver.FirstName,
+                                      DriverLastName = driver.LastName,
+                                      TotalCost = order.TotalCost,
+                                      DispatcherFirstName = dispatcher.FirstName,
+                                      DispatcherLastName = dispatcher.LastName,
+                                      TariffName = tariff.Name,
+                                      NumberOfPassengers = order.NumberOfPassengers,
+                                      Notes = order.Notes,
+                                      Status = order.DateEnd.HasValue ? "Завершен" : "В процессе",
+                                      IdDriver = order.FleetCars.IdDriver,
+                                      IdDispatcher = order.IdDispatcher
+                                  };
+                if (_employeeIdFilter != null)
+                {
+                    ordersQuery = ordersQuery.Where(o => o.IdDriver == _employeeIdFilter.Value || o.IdDispatcher == _employeeIdFilter.Value);
+                    btnCreateOrder.Visibility = Visibility.Hidden;
+                }
+                var orders = ordersQuery.OrderByDescending(o => o.DateStart).ToList();
+               
+                if (!string.IsNullOrWhiteSpace(searchQuery))
+                {
+                    searchQuery = searchQuery.ToLower();
+                    orders = orders.Where(o =>
+                        o.CustomerName.ToLower().Contains(searchQuery) ||
+                        o.DepartureAddress.ToLower().Contains(searchQuery) ||
+                        o.ArrivalAddress.ToLower().Contains(searchQuery) ||
+                        o.CarModel.ToLower().Contains(searchQuery) ||
+                        o.CarBrand.ToLower().Contains(searchQuery) ||
+                        o.DriverFirstName.ToLower().Contains(searchQuery) ||
+                        o.DriverLastName.ToLower().Contains(searchQuery) ||
+                        o.DispatcherFirstName.ToLower().Contains(searchQuery) ||
+                        o.DispatcherLastName.ToLower().Contains(searchQuery) ||
+                        o.TariffName.ToLower().Contains(searchQuery) ||
+                        o.Notes.ToLower().Contains(searchQuery) ||
+                        o.DateStart.ToString().Contains(searchQuery) ||
+                        o.DateEnd.ToString().Contains(searchQuery) ||
+                        o.TotalCost.ToString().Contains(searchQuery) ||
+                        o.NumberOfPassengers.ToString().Contains(searchQuery) ||
+                        o.Status.ToLower().Contains(searchQuery)
+                    ).ToList();
+                }
 
+                var orderViews = orders.Select(o => new OrderView
+                {
+                    OrderID = o.OrderID,
+                    CustomerName = o.CustomerName,
+                    DateStart = o.DateStart,
+                    DateEnd = o.DateEnd,
+                    DepartureAddress = o.DepartureAddress,
+                    ArrivalAddress = o.ArrivalAddress,
+                    Car = o.CarBrand + " " + o.CarModel,
+                    Driver = o.DriverFirstName + " " + o.DriverLastName,
+                    TotalCost = (int)o.TotalCost,
+                    Dispatcher = o.DispatcherFirstName + " " + o.DispatcherLastName,
+                    Tariff = o.TariffName,
+                    NumberOfPassengers = (int)o.NumberOfPassengers,
+                    Notes = o.Notes,
+                    TripDate = $"{o.DateStart:dd.MM.yyyy HH:mm} - {o.DateEnd:dd.MM.yyyy HH:mm}",
+                    Status = o.Status,
+                    IsCompleted = o.Status != "Завершен",
+                    CanManageOrder = _currentUserRole == "Администратор" || _currentUserRole == "Диспетчер"
+                }).ToList();
+                OrderList.ItemsSource = orderViews;
+                if (orders.Count == 0)
+                {
+                    MessageBox.Show("Нет заказов, соответствующих вашему запросу.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            LoadData(SearchTextBox.Text);
+        }
+
+        private void ResetSearch_Click(object sender, RoutedEventArgs e)
+        {
+            SearchTextBox.Text = string.Empty;
+            LoadData();
+        }
         private void ShowOrderCard_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
@@ -92,24 +150,13 @@ namespace FleetVehicles.Views.Pages
                 var order = button.CommandParameter as OrderView;
                 if (order != null)
                 {
-                    using (var context = new FleetVehiclesEntities())
-                    {
-                        Orders orderData = context.Orders.SingleOrDefault(o => o.IdOrder == order.OrderID);
-                        if (orderData != null)
-                        {
-                            OrderCard card = new OrderCard(_currentUserId, orderData);
-                            card.Closed += Card_Closed;
-                            card.Show();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Заявка не найдена.");
-                        }
-                    }
+                    OrderCard card = new OrderCard(order.OrderID, _currentUser.IdEmployee);
+                    card.Closed += Card_Closed;
+                    card.Show();
                 }
                 else
                 {
-                    OrderCard card = new OrderCard(_currentUserId);
+                    OrderCard card = new OrderCard(null, _currentUser.IdEmployee);
                     card.Closed += Card_Closed;
                     card.Show();
                 }
@@ -121,11 +168,83 @@ namespace FleetVehicles.Views.Pages
             LoadData();
         }
 
-        private void btnCreateOrder_Click(object sender, RoutedEventArgs e)
+        private void CloseOrder_Click(object sender, RoutedEventArgs e)
         {
-            OrderCard card = new OrderCard(_currentUserId);
-            card.Closed += Card_Closed;
-            card.Show();
+            var button = sender as Button;
+            var orderView = button?.CommandParameter as OrderView;
+            if (orderView != null)
+            {
+                using (var context = new FleetVehiclesEntities())
+                {
+                    var order = context.Orders.SingleOrDefault(o => o.IdOrder == orderView.OrderID);
+                    if (order != null)
+                    {
+                        order.DateEnd = DateTime.Now;
+                        context.SaveChanges();
+                        MessageBox.Show("Заказ успешно закрыт.");
+                        LoadData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Заказ не найден.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+
+        private void DeleteOrder_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var orderView = button?.CommandParameter as OrderView;
+            if (orderView != null)
+            {
+                var result = MessageBox.Show("Вы уверены, что хотите удалить заказ?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    using (var context = new FleetVehiclesEntities())
+                    {
+                        var order = context.Orders.SingleOrDefault(o => o.IdOrder == orderView.OrderID);
+                        if (order != null)
+                        {
+                            var relatedServices = context.OrderAdditionalService.Where(oas => oas.IdOrder == order.IdOrder).ToList();
+                            foreach (var service in relatedServices)
+                            {
+                                context.OrderAdditionalService.Remove(service);
+                            }
+
+                            context.Orders.Remove(order);
+                            context.SaveChanges();
+                            MessageBox.Show($"Заказ №{order.IdOrder} успешно удален.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                            LoadData();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Заказ не найден.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void OrderList_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in OrderList.Items)
+            {
+                var container = OrderList.ItemContainerGenerator.ContainerFromItem(item) as ContentPresenter;
+                if (container == null)
+                    continue;
+
+                var closeOrderButton = container.ContentTemplate.FindName("CloseOrder", container) as Button;
+                var deleteOrderButton = container.ContentTemplate.FindName("DeleteOrder", container) as Button;
+                var orderView = item as OrderView;
+
+                if (closeOrderButton != null && deleteOrderButton != null)
+                {
+                    closeOrderButton.Visibility = (orderView.Status != "Завершен" && (_currentUser.IdPosition == 3 || _currentUser.IdPosition == 2)) ? Visibility.Visible : Visibility.Collapsed;
+
+                    deleteOrderButton.Visibility = _currentUser.IdPosition == 3 || _currentUser.IdPosition == 2 ? Visibility.Visible : Visibility.Collapsed;
+                }
+            }
         }
     }
 }

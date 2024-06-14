@@ -18,6 +18,7 @@ namespace FleetVehicles.Data
         public FleetCars()
         {
             this.InsurancePolicy = new HashSet<InsurancePolicy>();
+            this.Orders = new HashSet<Orders>();
         }
     
         public int IdFleetCar { get; set; }
@@ -32,5 +33,7 @@ namespace FleetVehicles.Data
         public virtual Employees Employees { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InsurancePolicy> InsurancePolicy { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Orders> Orders { get; set; }
     }
 }

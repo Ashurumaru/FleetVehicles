@@ -1,0 +1,52 @@
+﻿<Window x:Class="FleetVehicles.Views.Cards.EmployeeCard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FleetVehicles.Views.Cards"
+        mc:Ignorable="d"
+        Title="Карточка сотрудника" Height="600" Width="800">
+    <Grid Background="#403c3c">
+        
+        <TabControl Background="Transparent">
+            <TabItem Header="Информация о сотруднике">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="20">
+                        <TextBlock Style="{DynamicResource StandartText}" Text="Имя" Margin="0,5" />
+                        <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="FirstNameTextBox" Margin="0,5" Width="350" Text="{Binding FirstName}"/>
+                        <TextBlock Style="{DynamicResource StandartText}" Text="Фамилия" Margin="0,5" />
+                        <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="LastNameTextBox" Margin="0,5" Width="350" Text="{Binding LastName}"/>
+                        <TextBlock Style="{DynamicResource StandartText}" Text="Отчество" Margin="0,5" />
+                        <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="PatronymicTextBox" Margin="0,5" Width="350" Text="{Binding Patronymic}"/>
+                        <TextBlock Style="{DynamicResource StandartText}" Text="Телефон" Margin="0,5" />
+                        <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="PhoneNumberTextBox" Margin="0,5" Width="350" Text="{Binding PhoneNumber}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="20">
+                        <TextBlock Style="{DynamicResource StandartText}" Text="Должность" Margin="0,5" />
+                        <ComboBox x:Name="PositionComboBox" Margin="0,5" Width="350" DisplayMemberPath="Name" SelectedValuePath="IdPosition" SelectedValue="{Binding IdPosition}"/>
+                        <TextBlock Style="{DynamicResource StandartText}" Text="Номер водительского удостоверения" Margin="0,5"/>
+                        <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="DriverLicenseNumberTextBox" Margin="0,5" Width="350" Text="{Binding DriverLicenseNumber}"/>
+                        <TextBlock Style="{DynamicResource StandartText}" Text="Логин" Margin="0,5" />
+                        <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="LoginTextBox" Margin="0,5" Width="350" Text="{Binding Login}"/>
+                        <TextBlock Style="{DynamicResource StandartText}" Text="Пароль" Margin="0,5" />
+                        <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="PasswordTextBox" Margin="0,5" Width="350" Text="{Binding Password}"/>
+                    </StackPanel>
+                    <Grid VerticalAlignment="Bottom"  HorizontalAlignment="Center" Margin="0,10,0,15" Grid.ColumnSpan="2">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="Отмена" Style="{DynamicResource CustomButtonStyle}" Height="30" HorizontalAlignment="Center" Margin="10,0" Width="80" Click="CancelButton_Click"/>
+                            <Button Content="Сохранить" Style="{DynamicResource CustomButtonStyle}" Height="30" HorizontalAlignment="Center" Margin="10,0" Width="80" Click="SaveButton_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Заказы сотрудника">
+            <Frame x:Name="FrameOrders" NavigationUIVisibility="Automatic" />
+        </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

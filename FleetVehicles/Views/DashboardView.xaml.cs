@@ -29,7 +29,7 @@ namespace FleetVehicles.Views
 
         private void OrdersPage_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new ManagementOrderPage(_currentUserId));
+            MainFrame.Navigate(new ManagementOrderPage(_currentUserId, null));
         }
 
         private void CarsPage_Click(object sender, RoutedEventArgs e)
@@ -40,12 +40,13 @@ namespace FleetVehicles.Views
 
         private void PersonalAccountPage_Click(object sender, RoutedEventArgs e)
         {
+            MainFrame.Navigate(new PersonalAccountPage(_currentUserId));
 
         }
 
         private void ReportPage_Click(object sender, RoutedEventArgs e)
         {
-            
+            MainFrame.Navigate(new ReportPage());
         }
 
         private void btnLogOut_Click(object sender, RoutedEventArgs e)
@@ -53,6 +54,17 @@ namespace FleetVehicles.Views
             LoginView loginView = new LoginView();
             loginView.Show();
             this.Close();
+        }
+
+        private void CustomerPage_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new ManagementCustomerPage(_currentUserId));
+
+        }
+
+        private void EmployeePage_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new ManagementEmployeePage(_currentUserId));
         }
     }
 }

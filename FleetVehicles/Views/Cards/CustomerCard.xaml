@@ -1,0 +1,26 @@
+﻿<Window x:Class="FleetVehicles.Views.Cards.CustomerCard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FleetVehicles.Views.Cards"
+        mc:Ignorable="d"
+      Title="Карточка клиента" Height="400" Width="300">
+    <Grid Background="#403c3c">
+        <StackPanel Grid.Column="0" Margin="20">
+            <TextBlock Text="Телефон" Margin="0,5" Style="{DynamicResource StandartText}"/>
+            <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="PhoneNumberTextBox" Margin="0,5" Width="200" Text="{Binding PhoneNumber}"/>
+            <TextBlock Text="Черный список" Margin="0,5" Style="{DynamicResource StandartText}"/>
+            <CheckBox x:Name="StopListCheckBox" Margin="0,5" Width="200" IsChecked="{Binding StopList}"/>
+            <TextBlock Text="Заметки" Margin="0,5" Style="{DynamicResource StandartText}"/>
+            <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="NotesTextBox" TextWrapping="Wrap" Margin="0,5" Width="200" Text="{Binding Notes}"/>
+        </StackPanel>
+
+        <Grid Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="00,10,0,15">
+                <Button Content="Отмена" Style="{DynamicResource CustomButtonStyle}" Height="30" HorizontalAlignment="Center" Margin="10,0" Width="80" Click="CancelButton_Click"/>
+                <Button Content="Сохранить" Style="{DynamicResource CustomButtonStyle}" Height="30" HorizontalAlignment="Center" Margin="10,0" Width="80" Click="SaveButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

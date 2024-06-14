@@ -35,6 +35,7 @@ namespace FleetVehicles.Data
     
         public virtual Customers Customers { get; set; }
         public virtual Employees Employees { get; set; }
+        public virtual FleetCars FleetCars { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderAdditionalService> OrderAdditionalService { get; set; }
         public virtual Tariff Tariff { get; set; }

@@ -67,6 +67,67 @@ namespace FleetVehicles.Views.Pages
             }
         }
 
+        private void LoadFleetCarsData(string searchQuery = "")
+        {
+            using (var context = new FleetVehiclesEntities())
+            {
+                var fleetCars = (from fleetCar in context.FleetCars
+                                 join car in context.Cars on fleetCar.IdCar equals car.IdCar
+                                 join carModel in context.CarModel on car.IdModel equals carModel.IdModel
+                                 join carBrand in context.CarBrand on carModel.IdBrand equals carBrand.IdBrand
+                                 join driver in context.Employees on fleetCar.IdDriver equals driver.IdEmployee
+                                 join color in context.CarColor on fleetCar.IdColor equals color.IdColor
+                                 select new
+                                 {
+                                     FleetCarID = fleetCar.IdFleetCar,
+                                     CarModel = carModel.Name,
+                                     CarBrand = carBrand.Name,
+                                     DriverFirstName = driver.FirstName,
+                                     DriverLastName = driver.LastName,
+                                     VinNumber = fleetCar.VinNumber,
+                                     RegistrationNumber = fleetCar.RegistrationNumber,
+                                     ColorName = color.Name
+                                 }).ToList();
+
+                if (!string.IsNullOrWhiteSpace(searchQuery))
+                {
+                    searchQuery = searchQuery.ToLower();
+                    fleetCars = fleetCars.Where(fc =>
+                        fc.CarModel.ToLower().Contains(searchQuery) ||
+                        fc.CarBrand.ToLower().Contains(searchQuery) ||
+                        fc.DriverFirstName.ToLower().Contains(searchQuery) ||
+                        fc.DriverLastName.ToLower().Contains(searchQuery) ||
+                        fc.VinNumber.ToLower().Contains(searchQuery) ||
+                        fc.RegistrationNumber.ToLower().Contains(searchQuery) ||
+                        fc.ColorName.ToLower().Contains(searchQuery)
+                    ).ToList();
+                }
+
+                var fleetCarViews = fleetCars.Select(fc => new FleetCarView
+                {
+                    FleetCarID = fc.FleetCarID,
+                    CarInfo = fc.CarBrand + " " + fc.CarModel,
+                    DriverName = fc.DriverFirstName + " " + fc.DriverLastName,
+                    VinNumber = fc.VinNumber,
+                    RegistrationNumber = fc.RegistrationNumber,
+                    ColorName = fc.ColorName
+                }).ToList();
+
+                FleetCarList.ItemsSource = fleetCarViews;
+            }
+        }
+
+        private void SearchFleetCarTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            LoadFleetCarsData(SearchFleetCarTextBox.Text);
+        }
+
+        private void ResetFleetCarSearch_Click(object sender, RoutedEventArgs e)
+        {
+            SearchFleetCarTextBox.Text = string.Empty;
+            LoadFleetCarsData();
+        }
+
         private void ShowFleetCarCard_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;

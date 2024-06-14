@@ -7,74 +7,99 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ManagementOrderPage">
-
     <Grid>
-        <StackPanel Orientation="Vertical">
+        <Grid VerticalAlignment="Top">
             <Button x:Name="btnCreateOrder" Content="Создать" Click="ShowOrderCard_Click" HorizontalAlignment="Left" Margin="5 5 5 20" Style="{DynamicResource CustomButtonStyle}" Width="80"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBox x:Name="SearchTextBox" Width="200" TextChanged="SearchTextBox_TextChanged" Tag="Поиск" HorizontalAlignment="Right"  Style="{DynamicResource CustomTextBoxStyle}" Margin="5 5 5 20" />
+                <Button x:Name="btnResetSearch" Content="Сбросить" Click="ResetSearch_Click" HorizontalAlignment="Right" Margin="5 5 5 20" Style="{DynamicResource CustomButtonStyle}" Width="80"/>
+            </StackPanel>
+        </Grid>
+        <StackPanel Orientation="Horizontal"  VerticalAlignment="Top">
+           
         </StackPanel>
         <ScrollViewer VerticalScrollBarVisibility="Auto" Background="Transparent" Margin="0 40 0 0">
-            <ItemsControl x:Name="OrderList">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="2"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+            <ItemsControl x:Name="OrderList" Loaded="OrderList_Loaded">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border BorderThickness="1" BorderBrush="#fccc3c" CornerRadius="10" Margin="5">
-                            <StackPanel Margin="5">
-                                <TextBlock Text="{Binding TripDate}" FontWeight="Bold" FontSize="12"/>
+                            <Grid>
+                                <StackPanel Margin="5">
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Заказ №" FontWeight="Bold" FontSize="16"/>
+                                            <TextBlock Text="{Binding OrderID}" FontWeight="Bold" FontSize="16"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <TextBlock Text="Статус заказа:" Margin="100 0 0 0" FontWeight="Bold"  FontSize="16"/>
+                                            <TextBlock Text="{Binding Status}" Margin="10 0 0 0" FontWeight="Bold" FontSize="16"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Дата и время поездки: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding TripDate}" FontWeight="Bold" FontSize="12"/>
+                                    </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Клиент: " FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding CustomerName}"  FontSize="14" />
-                                </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Машина: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Car}"/>
+                                    </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Машина: " FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding Car}"/>
-                                </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Водитель: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Driver}"/>
+                                    </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Водитель: " FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding Driver}"/>
-                                </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Клиент: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding CustomerName}"  FontSize="12" />
+                                    </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Адрес отправления: " FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding DepartureAddress}"/>
-                                </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Количество пассажиров: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding NumberOfPassengers}"/>
+                                    </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Адрес прибытия: " FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding ArrivalAddress}"/>
-                                </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Тариф: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Tariff}"/>
+                                    </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Количество пассажиров: " FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding NumberOfPassengers}"/>
-                                </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Адрес отправления: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding DepartureAddress}"/>
+                                    </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Диспетчер: " FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding Dispatcher}"/>
-                                </StackPanel>
-                                
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Тариф: " FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding Tariff}"/>
-                                </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Адрес прибытия: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding ArrivalAddress}"/>
+                                    </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Общая сумма заказа: " FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding TotalCost}"/>
-                                </StackPanel>
-                                
-                                <TextBlock Text="Заметки:" FontWeight="Bold" Margin="0,5,0,0"/>
-                                <TextBlock Text="{Binding Notes}" TextWrapping="Wrap"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Общая сумма заказа: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding TotalCost}"/>
+                                    </StackPanel>
 
-                                <Button Content="Подробнее" Click="ShowOrderCard_Click" Style="{DynamicResource CustomButtonStyle}" CommandParameter="{Binding}" Width="150" HorizontalAlignment="Left" Margin="5,10,0,0"/>
-                            </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Диспетчер принявший заказ: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Dispatcher}"/>
+                                    </StackPanel>
+
+                                    <TextBlock Text="Примечания к заказу:" FontWeight="Bold" />
+                                    <TextBlock Text="{Binding Notes}" TextWrapping="Wrap" Width="600" HorizontalAlignment="Left"/>
+                                </StackPanel>
+                                <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right"> 
+                                    <Button Content="Закрыть заказ" Name="CloseOrder" Click="CloseOrder_Click" Style="{DynamicResource CustomButtonStyle}" CommandParameter="{Binding}" Width="150" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5,10,5,0">
+                                        <Button.Visibility>
+                                            <Binding Path="IsCompleted" Converter="{StaticResource BooleanToVisibilityConverter}"/>
+                                        </Button.Visibility>
+                                    </Button>
+                                    <Button Content="Удалить заказ" Name="DeleteOrder" Click="DeleteOrder_Click" Style="{DynamicResource CustomButtonStyle}" CommandParameter="{Binding}" Width="150" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5,10,5,00"/>
+                                    <Button Content="Подробнее" Click="ShowOrderCard_Click" Style="{DynamicResource CustomButtonStyle}" CommandParameter="{Binding}" Width="150" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5,10,5,10"/>
+
+                                </StackPanel>
+                               
+                            </Grid>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

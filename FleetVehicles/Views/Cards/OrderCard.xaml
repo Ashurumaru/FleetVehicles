@@ -4,9 +4,72 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FleetVehicles.Views.Cards"
+        xmlns:materialDesign="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         mc:Ignorable="d"
-        Title="OrderCard" Height="450" Width="800">
-    <Grid>
-        
+        Title="Карточка заказа" Height="480" Width="700">
+    <Grid Background="#403c3c">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Margin="10">
+            <TextBlock Style="{DynamicResource StandartText}" Text="Адрес отправления"/>
+            <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="DepartureAddressTextBox" Margin="0,5"  Tag="Адрес отправления" Text="{Binding DepartureAddress}"/>
+            <TextBlock Text="Адрес прибытия" Style="{DynamicResource StandartText}"/>
+            <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="ArrivalAddressTextBox" Margin="0,5"  Tag="Адрес прибытия" Text="{Binding ArrivalAddress}"/>
+            <TextBlock Text="Дата начала" Style="{DynamicResource StandartText}"/>
+            <materialDesign:DatePicker x:Name="DateStartPicker" Margin="0,5" Tag="Дата начала" SelectedDate="{Binding DateStart}"/>
+            <TextBlock Text="Время начала" Style="{DynamicResource StandartText}"/>
+            <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="TimeStartTextBox" Margin="0,5" Tag="Время начала"/>
+            <TextBlock Text="Дата окончания" Style="{DynamicResource StandartText}"/>
+            <materialDesign:DatePicker x:Name="DateEndPicker" Margin="0,5" Tag="Дата окончания" SelectedDate="{Binding DateEnd}"/>
+            <TextBlock Text="Время окончания" Style="{DynamicResource StandartText}"/>
+            <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="TimeEndTextBox" Margin="0,5" Tag="Время окончания" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Margin="10">
+            <TextBlock Text="Телефон клиента" Style="{DynamicResource StandartText}"/>
+            <ComboBox x:Name="CustomerComboBox" Margin="0,5"  DisplayMemberPath="PhoneNumber" SelectedValuePath="IdCustomer" SelectedValue="{Binding IdCustomer}" Tag="Клиент"/>
+            <TextBlock Text="Машина" Style="{DynamicResource StandartText}"/>
+            <ComboBox x:Name="FleetCarComboBox" Margin="0,5" DisplayMemberPath="CarInfo" SelectedValuePath="IdFleetCar" SelectedValue="{Binding IdFleetCar}"/>
+            <TextBlock Text="Диспетчер" Style="{DynamicResource StandartText}"/>
+            <ComboBox x:Name="DispatcherComboBox" Margin="0,5" DisplayMemberPath="FullName" SelectedValuePath="IdEmployee" SelectedValue="{Binding IdDispatcher}" Tag="Диспетчер"/>
+            <TextBlock Text="Тариф" Style="{DynamicResource StandartText}"/>
+            <ComboBox x:Name="TariffComboBox" Margin="0,5" DisplayMemberPath="Name" SelectedValuePath="IdTariff" SelectionChanged="TariffComboBox_SelectionChanged"  SelectedValue="{Binding IdTariff}"/>
+            <TextBlock Text="Количество пассажиров" Style="{DynamicResource StandartText}"/>
+            <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="NumberOfPassengersTextBox" Margin="0,5"  Tag="Количество пассажиров" Text="{Binding NumberOfPassengers}"/>
+            <TextBlock Text="Заметки" Style="{DynamicResource StandartText}"/>
+            <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="NotesTextBox" Margin="0,5" Height="50"  Tag="Заметки" Text="{Binding Notes}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Margin="10">
+            <TextBlock Text="Дополнительные услуги" Margin="0,10" Style="{DynamicResource StandartText}"/>
+            <StackPanel Orientation="Horizontal">
+                <ComboBox x:Name="AdditionalServiceComboBox" Width="100" Height="28" DisplayMemberPath="Name" SelectedValuePath="IdAdditionalService"/>
+                <TextBox x:Name="ServiceQuantityTextBox" Width="70" Margin="20,0,0,5" Tag="Кол-во" Style="{DynamicResource CustomTextBoxStyle}"/>
+            </StackPanel>
+            <Button Content="Добавить" Width="100" Margin="0,5" Click="AddAdditionalService_Click" Style="{DynamicResource CustomButtonStyle}"/>
+
+            <ListBox x:Name="AdditionalServicesListBox" Margin="0,5" Height="200" SelectionMode="Single">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Display}" Width="150"/>
+                            <Button Content="Удалить" Click="RemoveAdditionalService_Click" Tag="{Binding IdAdditionalService}" Width="50"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <TextBlock Text="Общая сумма заказа:" Style="{DynamicResource StandartText}"/>
+            <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="TotalCostTextBox" Margin="0,5"  Tag="Общая сумма" Text="{Binding TotalCost}"/>
+        </StackPanel>
+
+        <StackPanel Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">
+            <Button Content="Отмена" Style="{DynamicResource CustomButtonStyle}" Height="30" Width="80" Click="CancelButton_Click" Margin="10"/>
+            <Button Content="Сохранить" Style="{DynamicResource CustomButtonStyle}" Height="30" Width="80" Click="SaveButton_Click"/>
+        </StackPanel>
     </Grid>
 </Window>

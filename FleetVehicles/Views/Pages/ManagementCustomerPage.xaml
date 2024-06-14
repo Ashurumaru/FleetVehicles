@@ -1,0 +1,64 @@
+﻿<Page x:Class="FleetVehicles.Views.Pages.ManagementCustomerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FleetVehicles.Views.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ManagementCustomerPage">
+    <Grid>
+        <Grid VerticalAlignment="Top">
+            <Button x:Name="btnCreateCustomer" Content="Создать" Click="ShowCustomerCard_Click" HorizontalAlignment="Left" Margin="5 5 5 20" Style="{DynamicResource CustomButtonStyle}" Width="80"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBox x:Name="SearchTextBox" Width="200" TextChanged="SearchTextBox_TextChanged" Tag="Поиск" HorizontalAlignment="Right"  Style="{DynamicResource CustomTextBoxStyle}" Margin="5 5 5 20" />
+                <Button x:Name="btnResetSearch" Content="Сбросить" Click="ResetSearch_Click" HorizontalAlignment="Right" Margin="5 5 5 20" Style="{DynamicResource CustomButtonStyle}" Width="80"/>
+            </StackPanel>
+        </Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Background="Transparent" Margin="0 40 0 0">
+            <ItemsControl x:Name="CustomerList">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" BorderBrush="#fccc3c" CornerRadius="10" Margin="5">
+                            <Grid>
+                                <StackPanel Margin="5">
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Клиент: " FontWeight="Bold" FontSize="16"/>
+                                            <TextBlock Text="{Binding PhoneNumber}" FontWeight="Bold" FontSize="16"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Нахождение в стоплисте: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding StopList}" FontWeight="Bold" FontSize="12"/>
+                                    </StackPanel>
+
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Сумма затрат по заказам: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding TotalSpent}" FontWeight="Bold"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Количество поездок: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding TotalTrips}" FontWeight="Bold"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Примечание: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Notes}" TextWrapping="Wrap" Width="500" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                                    <Button Content="Удалить клиента" Name="DeleteCustomer" Click="DeleteCustomer_Click" Style="{DynamicResource CustomButtonStyle}" CommandParameter="{Binding}" Width="150" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5,10,5,0"/>
+                                    <Button Content="Подробнее" Click="ShowCustomerCard_Click" Style="{DynamicResource CustomButtonStyle}" CommandParameter="{Binding}" Width="150" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5,10,5,10"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</Page>

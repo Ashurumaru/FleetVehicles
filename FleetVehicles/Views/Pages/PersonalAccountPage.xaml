@@ -6,8 +6,55 @@
       xmlns:local="clr-namespace:FleetVehicles.Views.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="PersonalAccountPage">
+      Title="Личный кабинет">
+
     <Grid>
-        
+        <StackPanel>
+            <TextBlock Style="{DynamicResource StandartText}" Text="Личный кабинет" FontSize="20" FontWeight="Bold" Margin="15,20,0,20"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border BorderThickness="2" BorderBrush="#fccc3c" CornerRadius="20" Padding="5" Margin="15">
+                    <Grid>
+                        <StackPanel Orientation="Vertical" Margin="20">
+                            <TextBlock Style="{DynamicResource StandartText}" Text="Информация о сотруднике" FontSize="16" FontWeight="Bold"/>
+                            <StackPanel Orientation="Vertical" Margin="0,10,0,20">
+                                <TextBlock Style="{DynamicResource StandartText}" Text="Имя: " FontWeight="Bold"/>
+                                <TextBlock Style="{DynamicResource StandartText}" Text="{Binding FirstName}" FontSize="14"/>
+                                <TextBlock Style="{DynamicResource StandartText}" Text="Фамилия: " FontWeight="Bold"/>
+                                <TextBlock Style="{DynamicResource StandartText}" Text="{Binding LastName}" FontSize="14"/>
+                                <TextBlock Style="{DynamicResource StandartText}" Text="Отчество: " FontWeight="Bold"/>
+                                <TextBlock Style="{DynamicResource StandartText}" Text="{Binding Patronymic}" FontSize="14"/>
+                                <TextBlock Style="{DynamicResource StandartText}" Text="Телефон: " FontWeight="Bold"/>
+                                <TextBlock Style="{DynamicResource StandartText}" Text="{Binding PhoneNumber}" FontSize="14"/>
+                                <TextBlock x:Name="DriverLicense" Style="{DynamicResource StandartText}" Text="Номер водительского удостоверения: " FontWeight="Bold" Visibility="Hidden"/>
+                                <TextBlock x:Name="DriverLicenseNumber" Style="{DynamicResource StandartText}" Text="{Binding DriverLicenseNumber}" FontSize="14" Visibility="Hidden"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Button x:Name="ShowCardEmployee" Click="ShowCardEmployee_Click" Content="Редактировать" Style="{DynamicResource CustomButtonStyle}" Width="120" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                    </Grid>
+                </Border>
+                <Border BorderThickness="2" BorderBrush="#fccc3c" Grid.Column="1"  CornerRadius="20" Padding="5" Margin="15">
+
+                    <StackPanel Orientation="Vertical" Margin="20" >
+                        <TextBlock  Style="{DynamicResource StandartText}" Text="Статистика" FontSize="16" FontWeight="Bold"/>
+                        <Grid  Margin="0,10,0,20">
+                            <StackPanel VerticalAlignment="Top" x:Name="DispatcherStats" Orientation="Horizontal" Visibility="Hidden">
+                                <TextBlock Style="{DynamicResource StandartText}" Text="Количество обработанных заявок: " FontWeight="Bold"/>
+                                <TextBlock Style="{DynamicResource StandartText}" Text="{Binding ProcessedOrdersCount}" FontSize="12" FontWeight="Bold"/>
+                            </StackPanel>
+
+                            <StackPanel VerticalAlignment="Top" x:Name="DriverStats" Orientation="Horizontal" Visibility="Hidden">
+                                <TextBlock Style="{DynamicResource StandartText}" Text="Количество поездок: " FontWeight="Bold"/>
+                                <TextBlock Style="{DynamicResource StandartText}" Text="{Binding TripsCount}" FontSize="12" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Grid>         
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+        </StackPanel>
     </Grid>
 </Page>

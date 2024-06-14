@@ -43,6 +43,7 @@ namespace FleetVehicles.Views
                     if (user != null)
                     {
                         DashboardView dashbord = new DashboardView(user.IdEmployee);
+                        MessageBox.Show($"Вы зашли под учетной записью {user.FirstName} {user.LastName} {user.Position.Name}", "Добро пожаловать");
                         dashbord.Show();
                         this.Close();
                     }

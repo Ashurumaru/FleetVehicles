@@ -22,6 +22,9 @@ namespace FleetVehicles.Models
         public string Tariff { get; set; }
         public int NumberOfPassengers { get; set; }
         public string Notes { get; set; }
+       public string Status { get; set; }
+        public bool IsCompleted { get; set; }
+        public bool CanManageOrder { get; set; }
     }
 
 }

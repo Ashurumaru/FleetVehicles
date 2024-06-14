@@ -8,9 +8,13 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ManagementCarPage">
     <Grid>
-        <StackPanel Orientation="Vertical">
-            <Button x:Name="btnFleetCar" Content="Создать" Click="ShowFleetCarCard_Click" HorizontalAlignment="Left" Margin="5 5 5 20" Style="{DynamicResource CustomButtonStyle}" Width="80"/>
-        </StackPanel>
+        <Grid VerticalAlignment="Top">
+            <Button x:Name="btnCreateFleetCar" Content="Создать" Click="ShowFleetCarCard_Click" HorizontalAlignment="Left" Margin="5 5 5 20" Style="{DynamicResource CustomButtonStyle}" Width="80"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBox x:Name="SearchFleetCarTextBox" Width="200" TextChanged="SearchFleetCarTextBox_TextChanged" Tag="Поиск" HorizontalAlignment="Right" Style="{DynamicResource CustomTextBoxStyle}" Margin="5 5 5 20" />
+                <Button x:Name="btnResetFleetCarSearch" Content="Сбросить" Click="ResetFleetCarSearch_Click" HorizontalAlignment="Right" Margin="5 5 5 20" Style="{DynamicResource CustomButtonStyle}" Width="80"/>
+            </StackPanel>
+        </Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" Background="Transparent" Margin="0 40 0 0">
             <ItemsControl x:Name="FleetCarList">
                 <ItemsControl.ItemTemplate>
