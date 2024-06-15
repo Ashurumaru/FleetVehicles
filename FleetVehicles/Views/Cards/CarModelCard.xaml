@@ -1,0 +1,39 @@
+﻿<Window x:Class="FleetVehicles.Views.Cards.CarModelCard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FleetVehicles.Views.Cards"
+        mc:Ignorable="d"
+           Title="Карточка модели машины" Height="400" Width="600">
+    <Grid Background="#403c3c">
+        <StackPanel Margin="20">
+            <TextBlock  HorizontalAlignment="Center" Style="{DynamicResource StandartText}" Text="Название модели" Margin="0,5" />
+            <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="ModelNameTextBox" Margin="0,5" Width="300"/>
+
+            <TextBlock Style="{DynamicResource StandartText}" Text="Марка машины" Margin="0,5"  HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                <ComboBox x:Name="BrandComboBox" Margin="0,5" Width="250" DisplayMemberPath="Name" SelectedValuePath="IdBrand" SelectedValue="{Binding IdBrand}"/>
+                <Button x:Name="AddBrandButton" Click="AddBrandButton_Click" Style="{DynamicResource AddButtonStyle}" Margin="10 0 0 0" Width="30" Height="30" HorizontalAlignment="Right"/>
+            </StackPanel>
+
+            <Grid VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,10,0,15">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Отмена" Style="{DynamicResource CustomButtonStyle}" Height="30" HorizontalAlignment="Center" Margin="10,0" Width="80" Click="CancelButton_Click"/>
+                    <Button Content="Сохранить" Style="{DynamicResource CustomButtonStyle}" Height="30" HorizontalAlignment="Center" Margin="10,0" Width="80" Click="SaveButton_Click"/>
+                </StackPanel>
+            </Grid>
+            <TextBlock Style="{DynamicResource StandartText}" Text="Список моделей" Margin="20,5" Foreground="White"/>
+            <ListBox x:Name="ModelListBox" Margin="0,5" Height="120" SelectionMode="Single">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Display}" Width="400"/>
+                            <Button Content="Удалить" Click="RemoveModel_Click" Tag="{Binding IdModel}" Width="80" Style="{DynamicResource CustomButtonStyle}" Background="Red"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -33,17 +33,17 @@
             <Grid Height="40" VerticalAlignment="Top">
                 <Button x:Name="btnCustomerPage" Click="CustomerPage_Click" Style="{DynamicResource ButtonMenuStyle}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <!--<Image Source="/Resources/user.png" Stretch="Uniform" Margin="10 0 0 0"/>-->
+                        <Image Source="/Resources/client.png" Stretch="Uniform" Margin="10 0 0 0"/>
                         <TextBlock Text="Клиенты" VerticalAlignment="Center" Margin="5 0 0 0"/>
                     </StackPanel>
                 </Button>
             </Grid>
             
-            <Grid Height="40" VerticalAlignment="Top">
+            <Grid Height="40" VerticalAlignment="Top" Visibility="Collapsed" x:Name="VisibilityEmployeeButton">
                 <Button x:Name="btnEmployeePage" Click="EmployeePage_Click" Style="{DynamicResource ButtonMenuStyle}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <!--<Image Source="/Resources/user.png" Stretch="Uniform" Margin="10 0 0 0"/>-->
-                        <TextBlock Text="Сотрудники (видимость)" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                        <Image Source="/Resources/employees.png" Stretch="Uniform" Margin="10 0 0 0"/>
+                        <TextBlock Text="Сотрудники" VerticalAlignment="Center" Margin="5 0 0 0"/>
                     </StackPanel>
                 </Button>
             </Grid>

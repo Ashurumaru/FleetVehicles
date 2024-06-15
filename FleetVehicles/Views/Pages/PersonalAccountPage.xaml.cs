@@ -1,5 +1,6 @@
 ﻿using FleetVehicles.Data;
 using FleetVehicles.Models;
+using FleetVehicles.Views.Cards;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,14 +68,14 @@ namespace FleetVehicles.Views.Pages
                     if (employee.PositionName == "Диспетчер")
                     {
                         DispatcherStats.Visibility = Visibility.Visible;
-                        LoadDispatcherStats(employeeView);
+                        LoadDispatcherStats(employeeView, null, null);
                     }
                     else if (employee.PositionName == "Водитель")
                     {
                         DriverLicense.Visibility = Visibility.Visible;
                         DriverLicenseNumber.Visibility = Visibility.Visible;
                         DriverStats.Visibility = Visibility.Visible;
-                        LoadDriverStats(employeeView);
+                        LoadDriverStats(employeeView, null, null);
                     }
                 }
                 else
@@ -84,25 +85,60 @@ namespace FleetVehicles.Views.Pages
             }
         }
 
-        private void LoadDispatcherStats(PersonalAccountView employeeView)
+        private void LoadDispatcherStats(PersonalAccountView employeeView, DateTime? startDate, DateTime? endDate)
         {
             using (var context = new FleetVehiclesEntities())
             {
-                employeeView.ProcessedOrdersCount = context.Orders.Count(o => o.IdDispatcher == employeeView.IdEmployee);
+                var query = context.Orders.Where(o => o.IdDispatcher == employeeView.IdEmployee);
+                if (startDate.HasValue && endDate.HasValue)
+                {
+                    query = query.Where(o => o.DateStart >= startDate.Value && o.DateStart <= endDate.Value);
+                }
+                employeeView.ProcessedOrdersCount = query.Count();
+                ProcessedOrdersCountTextBlock.Text = employeeView.ProcessedOrdersCount.ToString();
+
             }
         }
 
-        private void LoadDriverStats(PersonalAccountView employeeView)
+        private void LoadDriverStats(PersonalAccountView employeeView, DateTime? startDate, DateTime? endDate)
         {
             using (var context = new FleetVehiclesEntities())
             {
-                employeeView.TripsCount = context.Orders.Count(o => o.FleetCars.IdDriver == employeeView.IdEmployee);
+                var query = context.Orders.Where(o => o.FleetCars.IdDriver == employeeView.IdEmployee);
+                if (startDate.HasValue && endDate.HasValue)
+                {
+                    query = query.Where(o => o.DateStart >= startDate.Value && o.DateStart <= endDate.Value);
+                }
+                employeeView.TripsCount = query.Count();
+                employeeView.PassengersCount = query.Sum(o => (int?)o.NumberOfPassengers) ?? 0;
+                TripsCountTextBlock.Text = employeeView.TripsCount.ToString();
+                PassengersCountTextBlock.Text = employeeView.PassengersCount.ToString();
+            }
+        }
+
+        private void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DateTime? startDate = StartDatePicker.SelectedDate;
+            DateTime? endDate = EndDatePicker.SelectedDate;
+
+            if (DataContext is PersonalAccountView employeeView)
+            {
+                if (employeeView.IsDriver)
+                {
+                    LoadDriverStats(employeeView, startDate, endDate);
+                }
+                else
+                {
+                    LoadDispatcherStats(employeeView, startDate, endDate);
+                }
             }
         }
 
         private void ShowCardEmployee_Click(object sender, RoutedEventArgs e)
         {
-
+            EmployeeCard card = new EmployeeCard(_currentUserId, _currentUserId);
+            card.Closed += (s, args) => LoadEmployeeData();
+            card.ShowDialog();
         }
     }
 }

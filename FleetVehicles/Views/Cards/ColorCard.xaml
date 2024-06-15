@@ -1,0 +1,33 @@
+﻿<Window x:Class="FleetVehicles.Views.Cards.ColorCard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FleetVehicles.Views.Cards"
+        mc:Ignorable="d"
+          Title="Карточка цвета машины" Height="430" Width="600">
+    <Grid Background="#403c3c">
+        <StackPanel Margin="20">
+            <TextBlock  HorizontalAlignment="Center" Style="{DynamicResource StandartText}" Text="Название цвета" Margin="0,5"/>
+            <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="ColorNameTextBox" Margin="0,5" Width="300"/>
+
+            <Grid VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,10,0,15">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Отмена" Style="{DynamicResource CustomButtonStyle}" Height="30" HorizontalAlignment="Center" Margin="10,0" Width="80" Click="CancelButton_Click"/>
+                    <Button Content="Сохранить" Style="{DynamicResource CustomButtonStyle}" Height="30" HorizontalAlignment="Center" Margin="10,0" Width="80" Click="SaveButton_Click"/>
+                </StackPanel>
+            </Grid>
+            <TextBlock Style="{DynamicResource StandartText}" Text="Список цветов" Margin="20,5" Foreground="White"/>
+            <ListBox x:Name="ColorListBox" Margin="0,5" Height="200" SelectionMode="Single">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Display}" Width="420"/>
+                            <Button Content="Удалить" Click="RemoveColor_Click" Tag="{Binding IdColor}" Width="80" Style="{DynamicResource CustomButtonStyle}" Background="Red"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+    </Grid>
+</Window>

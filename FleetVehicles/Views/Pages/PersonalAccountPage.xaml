@@ -37,20 +37,26 @@
                     </Grid>
                 </Border>
                 <Border BorderThickness="2" BorderBrush="#fccc3c" Grid.Column="1"  CornerRadius="20" Padding="5" Margin="15">
-
-                    <StackPanel Orientation="Vertical" Margin="20" >
-                        <TextBlock  Style="{DynamicResource StandartText}" Text="Статистика" FontSize="16" FontWeight="Bold"/>
-                        <Grid  Margin="0,10,0,20">
-                            <StackPanel VerticalAlignment="Top" x:Name="DispatcherStats" Orientation="Horizontal" Visibility="Hidden">
+                    <StackPanel Orientation="Vertical" Margin="20">
+                        <TextBlock Style="{DynamicResource StandartText}" Text="Статистика" FontSize="16" FontWeight="Bold"/>
+                        <StackPanel Margin="0,10,0,20">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <TextBlock Text="С: " Style="{DynamicResource StandartText}" Margin="0,0,5,0"/>
+                                <DatePicker Height="25" VerticalAlignment="Top" x:Name="StartDatePicker" SelectedDateChanged="DatePicker_SelectedDateChanged" Width="120"/>
+                                <TextBlock Text="По: " Style="{DynamicResource StandartText}" Margin="10,0,5,0"/>
+                                <DatePicker Height="25" VerticalAlignment="Top" x:Name="EndDatePicker" SelectedDateChanged="DatePicker_SelectedDateChanged" Width="120"/>
+                            </StackPanel>
+                            <StackPanel VerticalAlignment="Top" x:Name="DispatcherStats" Orientation="Vertical" Visibility="Hidden">
                                 <TextBlock Style="{DynamicResource StandartText}" Text="Количество обработанных заявок: " FontWeight="Bold"/>
-                                <TextBlock Style="{DynamicResource StandartText}" Text="{Binding ProcessedOrdersCount}" FontSize="12" FontWeight="Bold"/>
+                                <TextBlock Style="{DynamicResource StandartText}" x:Name="ProcessedOrdersCountTextBlock" Text="{Binding ProcessedOrdersCount}" FontSize="12" FontWeight="Bold"/>
                             </StackPanel>
-
-                            <StackPanel VerticalAlignment="Top" x:Name="DriverStats" Orientation="Horizontal" Visibility="Hidden">
+                            <StackPanel VerticalAlignment="Top" x:Name="DriverStats" Orientation="Vertical" Visibility="Hidden">
                                 <TextBlock Style="{DynamicResource StandartText}" Text="Количество поездок: " FontWeight="Bold"/>
-                                <TextBlock Style="{DynamicResource StandartText}" Text="{Binding TripsCount}" FontSize="12" FontWeight="Bold"/>
+                                <TextBlock Style="{DynamicResource StandartText}" x:Name="TripsCountTextBlock" Text="{Binding TripsCount}" FontSize="12" FontWeight="Bold"/>
+                                <TextBlock Style="{DynamicResource StandartText}" Text="Количество перевезенных пассажиров: " FontWeight="Bold"/>
+                                <TextBlock Style="{DynamicResource StandartText}" x:Name="PassengersCountTextBlock" Text="{Binding PassengersCount}" FontSize="12" FontWeight="Bold"/>
                             </StackPanel>
-                        </Grid>         
+                        </StackPanel>
                     </StackPanel>
                 </Border>
             </Grid>

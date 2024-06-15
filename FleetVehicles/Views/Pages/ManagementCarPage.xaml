@@ -20,27 +20,33 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border BorderThickness="1" BorderBrush="#fccc3c" CornerRadius="5" Background="White" Margin="5">
-                            <StackPanel Margin="5">
-                                <TextBlock Text="{Binding CarInfo}" FontWeight="Bold" FontSize="14"/>
-                                <TextBlock Text="{Binding DriverName}" FontWeight="Bold" FontSize="16" Margin="0,5,0,0"/>
+                            <Grid>
+                                <StackPanel Margin="5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Машина: " FontWeight="Bold" FontSize="14"/>
+                                        <TextBlock Text="{Binding CarInfo}" FontWeight="Bold" FontSize="14"/>
 
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="VIN номер: " FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding VinNumber}"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding DriverName}" FontWeight="Bold" FontSize="16" Margin="0,5,0,0"/>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="VIN номер: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding VinNumber}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Регистрационный номер: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding RegistrationNumber}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Цвет: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding ColorName}"/>
+                                    </StackPanel>
                                 </StackPanel>
-
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Регистрационный номер: " FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding RegistrationNumber}"/>
-                                </StackPanel>
-
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Цвет: " FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding ColorName}"/>
-                                </StackPanel>
-
-                                <Button Content="Подробнее" Click="ShowFleetCarCard_Click" Style="{DynamicResource CustomButtonStyle}" CommandParameter="{Binding}" Width="150" HorizontalAlignment="Left" Margin="5,10,0,0"/>
-                            </StackPanel>
+                                <Button Content="Удалить машину" Name="DeleteCar" Click="DeleteCar_Click"  Style="{DynamicResource CustomButtonStyle}" CommandParameter="{Binding}" Width="150" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5,10,5,50"/>
+                                <Button Content="Подробнее" Click="ShowFleetCarCard_Click" Style="{DynamicResource CustomButtonStyle}" CommandParameter="{Binding}" Width="150" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5,10,5,10"/>
+                            </Grid>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

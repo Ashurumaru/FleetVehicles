@@ -3,6 +3,7 @@ using FleetVehicles.Views.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -40,6 +41,14 @@ namespace FleetVehicles.Views.Cards
             }
             else
             {
+                var user = _context.Employees.SingleOrDefault(e => e.IdEmployee == _currentUserId);
+                if (user != null)
+                {
+                    if (user.Position.Name != "Администратор")
+                    {
+                        PositionComboBox.IsEnabled = false;
+                    }
+                }
                 _employee = _context.Employees.SingleOrDefault(e => e.IdEmployee == employeeId.Value);
                 DataContext = _employee;
                 FrameOrders.Visibility = Visibility.Visible;

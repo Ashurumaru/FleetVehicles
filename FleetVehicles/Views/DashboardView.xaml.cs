@@ -1,4 +1,5 @@
-﻿using FleetVehicles.Views.Pages;
+﻿using FleetVehicles.Data;
+using FleetVehicles.Views.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +26,23 @@ namespace FleetVehicles.Views
         {
             _currentUserId = currentUserId;
             InitializeComponent();
+            CheckAdministratorRole();
         }
+        private void CheckAdministratorRole()
+        {
+            using (var context = new FleetVehiclesEntities())
+            {
+                var user = context.Employees.SingleOrDefault(e => e.IdEmployee == _currentUserId);
+                if (user != null)
+                {
+                    if (user.Position.Name == "Администратор")
+                    {
+                        VisibilityEmployeeButton.Visibility = Visibility.Visible;
+                    }
+                }
+            }
 
+        }
         private void OrdersPage_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new ManagementOrderPage(_currentUserId, null));

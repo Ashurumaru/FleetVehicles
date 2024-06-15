@@ -332,5 +332,26 @@ namespace FleetVehicles.Views.Cards
             _order.TotalCost = (int)(tariffCost + additionalServicesCost);
             TotalCostTextBox.Text = _order.TotalCost.ToString();
         }
+
+        private void AddTariffButton_Click(object sender, RoutedEventArgs e)
+        {
+            TariffCard card = new TariffCard();
+            card.Closed += (s, args) => LoadComboBoxData();
+            card.ShowDialog();
+        }
+
+        private void AddAdditionalServiceButton_Click(object sender, RoutedEventArgs e)
+        {
+            AdditionalServiceCard card = new AdditionalServiceCard();
+            card.Closed += (s, args) => LoadComboBoxData();
+            card.ShowDialog();
+        }
+
+        private void AddCustomerButton_Click(object sender, RoutedEventArgs e)
+        {
+            CustomerCard card = new CustomerCard();
+            card.Closed += (s, args) => LoadComboBoxData();
+            card.ShowDialog();
+        }
     }
 }

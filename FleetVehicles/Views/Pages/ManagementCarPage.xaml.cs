@@ -32,41 +32,6 @@ namespace FleetVehicles.Views.Pages
             _currentUserId = currentUserId;
         }
 
-        private void LoadFleetCarsData()
-        {
-            using (var context = new FleetVehiclesEntities())
-            {
-                var fleetCars = (from fleetCar in context.FleetCars
-                                 join car in context.Cars on fleetCar.IdCar equals car.IdCar
-                                 join carModel in context.CarModel on car.IdModel equals carModel.IdModel
-                                 join carBrand in context.CarBrand on carModel.IdBrand equals carBrand.IdBrand
-                                 join driver in context.Employees on fleetCar.IdDriver equals driver.IdEmployee
-                                 join color in context.CarColor on fleetCar.IdColor equals color.IdColor
-                                 select new
-                                 {
-                                     FleetCarID = fleetCar.IdFleetCar,
-                                     CarModel = carModel.Name,
-                                     CarBrand = carBrand.Name,
-                                     DriverFirstName = driver.FirstName,
-                                     DriverLastName = driver.LastName,
-                                     VinNumber = fleetCar.VinNumber,
-                                     RegistrationNumber = fleetCar.RegistrationNumber,
-                                     ColorName = color.Name
-                                 }).ToList()
-                                 .Select(fc => new FleetCarView
-                                 {
-                                     FleetCarID = fc.FleetCarID,
-                                     CarInfo = fc.CarBrand + " " + fc.CarModel,
-                                     DriverName = fc.DriverFirstName + " " + fc.DriverLastName,
-                                     VinNumber = fc.VinNumber,
-                                     RegistrationNumber = fc.RegistrationNumber,
-                                     ColorName = fc.ColorName
-                                 }).ToList();
-
-                FleetCarList.ItemsSource = fleetCars;
-            }
-        }
-
         private void LoadFleetCarsData(string searchQuery = "")
         {
             using (var context = new FleetVehiclesEntities())
@@ -84,6 +49,7 @@ namespace FleetVehicles.Views.Pages
                                      CarBrand = carBrand.Name,
                                      DriverFirstName = driver.FirstName,
                                      DriverLastName = driver.LastName,
+                                     DriverPatronymic = driver.Patronymic,
                                      VinNumber = fleetCar.VinNumber,
                                      RegistrationNumber = fleetCar.RegistrationNumber,
                                      ColorName = color.Name
@@ -107,7 +73,7 @@ namespace FleetVehicles.Views.Pages
                 {
                     FleetCarID = fc.FleetCarID,
                     CarInfo = fc.CarBrand + " " + fc.CarModel,
-                    DriverName = fc.DriverFirstName + " " + fc.DriverLastName,
+                    DriverName = fc.DriverFirstName + " " + fc.DriverLastName + " " + fc.DriverLastName,
                     VinNumber = fc.VinNumber,
                     RegistrationNumber = fc.RegistrationNumber,
                     ColorName = fc.ColorName
@@ -136,24 +102,13 @@ namespace FleetVehicles.Views.Pages
                 var fleetCar = button.CommandParameter as FleetCarView;
                 if (fleetCar != null)
                 {
-                    using (var context = new FleetVehiclesEntities())
-                    {
-                        var fleetCarData = context.FleetCars.SingleOrDefault(fc => fc.IdFleetCar == fleetCar.FleetCarID);
-                        if (fleetCarData != null)
-                        {
-                            CarCard card = new CarCard(_currentUserId, fleetCarData);
-                            card.Closed += Card_Closed;
-                            card.Show();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Автомобиль не найден.");
-                        }
-                    }
+                    FleetCarCard card = new FleetCarCard(_currentUserId, fleetCar.FleetCarID);
+                    card.Closed += Card_Closed;
+                    card.Show();
                 }
                 else
                 {
-                    CarCard card = new CarCard(_currentUserId);
+                    FleetCarCard card = new FleetCarCard(_currentUserId, null);
                     card.Closed += Card_Closed;
                     card.Show();
                 }
@@ -167,9 +122,44 @@ namespace FleetVehicles.Views.Pages
 
         private void btnCreateFleetCar_Click(object sender, RoutedEventArgs e)
         {
-            CarCard card = new CarCard(_currentUserId);
+            FleetCarCard card = new FleetCarCard(_currentUserId, null);
             card.Closed += Card_Closed;
             card.Show();
+        }
+
+        private void DeleteCar_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var fleetCar = button?.CommandParameter as FleetCarView;
+            if (fleetCar != null)
+            {
+                var result = MessageBox.Show("Вы уверены, что хотите удалить машину?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    using (var context = new FleetVehiclesEntities())
+                    {
+                        var fleetCarToRemove = context.FleetCars.SingleOrDefault(fc => fc.IdFleetCar == fleetCar.FleetCarID);
+                        if (fleetCarToRemove != null)
+                        {
+                            var relatedOrders = context.Orders.Where(o => o.IdFleetCar == fleetCarToRemove.IdFleetCar).ToList();
+                            if (relatedOrders.Any())
+                            {
+                                MessageBox.Show("Машина не может быть удалена, так как она участвует в одном или нескольких заказах.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
+                            }
+
+                            context.FleetCars.Remove(fleetCarToRemove);
+                            context.SaveChanges();
+                            MessageBox.Show("Машина успешно удалена.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                            LoadFleetCarsData();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Машина не найдена.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            }
         }
     }
 }

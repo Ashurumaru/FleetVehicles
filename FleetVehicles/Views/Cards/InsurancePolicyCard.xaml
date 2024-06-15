@@ -1,0 +1,27 @@
+﻿<Window x:Class="FleetVehicles.Views.Cards.InsurancePolicyCard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FleetVehicles.Views.Cards"
+        mc:Ignorable="d"
+Title="Карточка страхового полиса" Height="400" Width="400">
+    <Grid Background="#403c3c">
+        <StackPanel Margin="20">
+            <TextBlock Style="{DynamicResource StandartText}" Text="Тип" Margin="0,5"/>
+            <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="TypeTextBox" Margin="0,5" Width="350" Text="{Binding Type}"/>
+            <TextBlock Style="{DynamicResource StandartText}" Text="Номер" Margin="0,5"/>
+            <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="NumberTextBox" Margin="0,5" Width="350" Text="{Binding Number}"/>
+            <TextBlock Style="{DynamicResource StandartText}" Text="Дата начала" Margin="0,5"/>
+            <DatePicker x:Name="DateOfIssuePicker" Margin="0,5" Width="350" SelectedDate="{Binding DateOfIssue}"/>
+            <TextBlock Style="{DynamicResource StandartText}" Text="Дата окончания" Margin="0,5"/>
+            <DatePicker x:Name="DateOfExpiryPicker" Margin="0,5" Width="350" SelectedDate="{Binding DateOfExpiry}"/>
+        </StackPanel>
+        <Grid VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,10,0,15">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Отмена" Style="{DynamicResource CustomButtonStyle}" Height="30" HorizontalAlignment="Center" Margin="10,0" Width="80" Click="CancelButton_Click"/>
+                <Button Content="Сохранить" Style="{DynamicResource CustomButtonStyle}" Height="30" HorizontalAlignment="Center" Margin="10,0" Width="80" Click="SaveButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

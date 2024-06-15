@@ -16,12 +16,14 @@ namespace FleetVehicles.Views.Pages
         private Employees _currentUser;
         private string _currentUserRole;
         private int? _employeeIdFilter;
+        private int? _carIdFilter;
 
-        public ManagementOrderPage(int currentUserId, int? employeeIdFilter)
+        public ManagementOrderPage(int currentUserId, int? employeeIdFilter, int? carIdFilter = null)
         {
             InitializeComponent();
             LoadUser(currentUserId);
             _employeeIdFilter = employeeIdFilter;
+            _carIdFilter = carIdFilter;
             LoadData();
         }
 
@@ -72,11 +74,17 @@ namespace FleetVehicles.Views.Pages
                                       Notes = order.Notes,
                                       Status = order.DateEnd.HasValue ? "Завершен" : "В процессе",
                                       IdDriver = order.FleetCars.IdDriver,
-                                      IdDispatcher = order.IdDispatcher
+                                      IdDispatcher = order.IdDispatcher,
+                                      IdFleetCar = order.FleetCars.IdFleetCar,
                                   };
                 if (_employeeIdFilter != null)
                 {
                     ordersQuery = ordersQuery.Where(o => o.IdDriver == _employeeIdFilter.Value || o.IdDispatcher == _employeeIdFilter.Value);
+                    btnCreateOrder.Visibility = Visibility.Hidden;
+                }
+                if (_carIdFilter != null)
+                {
+                    ordersQuery = ordersQuery.Where(o => o.IdFleetCar == _carIdFilter.Value);
                     btnCreateOrder.Visibility = Visibility.Hidden;
                 }
                 var orders = ordersQuery.OrderByDescending(o => o.DateStart).ToList();
@@ -127,7 +135,10 @@ namespace FleetVehicles.Views.Pages
                 OrderList.ItemsSource = orderViews;
                 if (orders.Count == 0)
                 {
-                    MessageBox.Show("Нет заказов, соответствующих вашему запросу.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (_carIdFilter == null && _employeeIdFilter == null)
+                    {
+                        MessageBox.Show("Нет заказов, соответствующих вашему запросу.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
                 }
             }
         }

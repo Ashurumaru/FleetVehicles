@@ -5,8 +5,81 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FleetVehicles.Views.Cards"
         mc:Ignorable="d"
-        Title="CarCard" Height="450" Width="800">
-    <Grid>
-        
+             Title="Карточка машины" Height="600" Width="800">
+    <Grid Background="#403c3c">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid VerticalAlignment="Top">
+            <Button x:Name="btnCreateCar" Content="Создать" Click="CreateCar_Click" HorizontalAlignment="Left" Margin="5 5 5 20" Style="{DynamicResource CustomButtonStyle}" Width="80"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBox x:Name="SearchCarTextBox" Width="200" TextChanged="SearchCarTextBox_TextChanged" Tag="Поиск" HorizontalAlignment="Right" Style="{DynamicResource CustomTextBoxStyle}" Margin="5 5 5 20" />
+                <Button x:Name="btnResetCarSearch" Content="Сбросить" Click="ResetCarSearch_Click" HorizontalAlignment="Right" Margin="5 5 5 20" Style="{DynamicResource CustomButtonStyle}" Width="80"/>
+            </StackPanel>
+        </Grid>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Background="Transparent" Margin="0 40 0 0">
+            <ItemsControl x:Name="CarList">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" BorderBrush="#fccc3c" CornerRadius="5" Background="White" Margin="5">
+                            <Grid>
+                                <StackPanel Margin="5">
+                                    <TextBlock Text="{Binding CarInfo}" FontWeight="Bold" FontSize="14"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Модель: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding ModelName}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Кузов: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding BodyName}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Количество мест: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding NumberOfSeats}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Грузоподъемность: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding LoadCapacity}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5,10,5,10">
+                                    <Button Content="Редактировать" Click="EditCar_Click" Style="{DynamicResource CustomButtonStyle}" CommandParameter="{Binding IdCar}" Width="100"/>
+                                    <Button Content="Удалить" Click="DeleteCar_Click" Style="{DynamicResource CustomButtonStyle}" CommandParameter="{Binding IdCar}" Width="100" Margin="5,0,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <Grid x:Name="CarForm" Visibility="Collapsed" Grid.RowSpan="2" Background="#403c3c">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Margin="20"  HorizontalAlignment="Center">
+                <TextBlock  Style="{DynamicResource StandartText}" Text="Модель" Margin="0,5" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <ComboBox x:Name="ModelComboBox" Margin="0,5" Width="320" DisplayMemberPath="Name" SelectedValuePath="IdModel"/>
+                    <Button x:Name="AddModelButton" Click="AddModelButton_Click" Style="{DynamicResource AddButtonStyle}" Margin="10 0 0 0" Width="30" Height="30" HorizontalAlignment="Right"/>
+                </StackPanel>
+                <TextBlock Style="{DynamicResource StandartText}" Text="Кузов" Margin="0,5" />
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox x:Name="BodyComboBox" Margin="0,5" Width="320" DisplayMemberPath="Name" SelectedValuePath="IdBody"/>
+                    <Button x:Name="AddBodyButton" Click="AddBodyButton_Click" Style="{DynamicResource AddButtonStyle}" Margin="10 0 0 0" Width="30" Height="30" HorizontalAlignment="Right"/>
+                </StackPanel>
+                <TextBlock Style="{DynamicResource StandartText}" Text="Количество мест" Margin="0,5" />
+                <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="NumberOfSeatsTextBox" Margin="0,5" Width="350" PreviewTextInput="NumberOfSeatsTextBox_PreviewTextInput"/>
+                <TextBlock Style="{DynamicResource StandartText}" Text="Грузоподъемность" Margin="0,5" />
+                <TextBox Style="{DynamicResource CustomTextBoxStyle}" x:Name="LoadCapacityTextBox" Margin="0,5" Width="350" PreviewTextInput="LoadCapacityTextBox_PreviewTextInput"/>
+            </StackPanel>
+            <Grid VerticalAlignment="Bottom"  HorizontalAlignment="Center" Margin="0,10,0,15" Grid.Row="1">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Отмена" Style="{DynamicResource CustomButtonStyle}" Height="30" HorizontalAlignment="Center" Margin="10,0" Width="80" Click="CancelButton_Click"/>
+                    <Button Content="Сохранить" Style="{DynamicResource CustomButtonStyle}" Height="30" HorizontalAlignment="Center" Margin="10,0" Width="80" Click="SaveButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

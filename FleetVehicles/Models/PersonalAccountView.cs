@@ -18,5 +18,7 @@ namespace FleetVehicles.Models
         public int? ProcessedOrdersCount { get; set; }
         public int? TripsCount { get; set; }
         public int? TotalMileage { get; set; }
+        public int? PassengersCount { get; set; }
+
     }
 }

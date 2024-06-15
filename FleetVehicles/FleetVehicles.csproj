@@ -52,6 +52,9 @@
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.39\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework.Aero2, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\PresentationFramework.Aero2.1.0.1\lib\PresentationFramework.Aero2.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -152,13 +155,29 @@
       <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AdditionalServiceView.cs" />
+    <Compile Include="Models\CarView.cs" />
     <Compile Include="Models\CustomerView.cs" />
     <Compile Include="Models\EmployeeView.cs" />
     <Compile Include="Models\FleetCarView.cs" />
     <Compile Include="Models\OrderView.cs" />
     <Compile Include="Models\PersonalAccountView.cs" />
+    <Compile Include="Views\Cards\AdditionalServiceCard.xaml.cs">
+      <DependentUpon>AdditionalServiceCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cards\CarBodyCard.xaml.cs">
+      <DependentUpon>CarBodyCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cards\CarBrandCard.xaml.cs">
+      <DependentUpon>CarBrandCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Cards\CarCard.xaml.cs">
       <DependentUpon>CarCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cards\CarModelCard.xaml.cs">
+      <DependentUpon>CarModelCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cards\ColorCard.xaml.cs">
+      <DependentUpon>ColorCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Cards\CustomerCard.xaml.cs">
       <DependentUpon>CustomerCard.xaml</DependentUpon>
@@ -166,8 +185,17 @@
     <Compile Include="Views\Cards\EmployeeCard.xaml.cs">
       <DependentUpon>EmployeeCard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Cards\FleetCarCard.xaml.cs">
+      <DependentUpon>FleetCarCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cards\InsurancePolicyCard.xaml.cs">
+      <DependentUpon>InsurancePolicyCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Cards\OrderCard.xaml.cs">
       <DependentUpon>OrderCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cards\TariffCard.xaml.cs">
+      <DependentUpon>TariffCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
@@ -234,7 +262,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Cards\AdditionalServiceCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cards\CarBodyCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cards\CarBrandCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Cards\CarCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cards\CarModelCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cards\ColorCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -246,7 +294,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Cards\FleetCarCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cards\InsurancePolicyCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Cards\OrderCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cards\TariffCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -294,6 +354,8 @@
       <DependentUpon>Database.edmx</DependentUpon>
       <LastGenOutput>Database.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\client.png" />
+    <Resource Include="Resources\employees.png" />
     <Resource Include="Resources\logout.png" />
     <Resource Include="Resources\user.png" />
     <Resource Include="Resources\report.png" />
