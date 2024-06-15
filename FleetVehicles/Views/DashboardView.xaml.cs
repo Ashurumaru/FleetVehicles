@@ -26,6 +26,7 @@ namespace FleetVehicles.Views
         {
             _currentUserId = currentUserId;
             InitializeComponent();
+            MainFrame.Navigate(new ManagementOrderPage(_currentUserId, null));
             CheckAdministratorRole();
         }
         private void CheckAdministratorRole()

@@ -115,33 +115,39 @@ namespace FleetVehicles.Views.Pages
                         .Bold()
                         .Alignment = Alignment.center;
 
-                    string currentDate = DateTime.Now.ToString("«dd» MMMM yyyy г.");
-                    doc.InsertParagraph($"Дата создания отчета: {currentDate}")
+                    doc.InsertParagraph($"Дата создания отчета: {DateTime.Now:«dd»  MMMM  yyyy}")
                         .FontSize(12)
                         .Italic()
                         .Alignment = Alignment.center;
 
+                    doc.AddFooters();
+                    doc.Footers.Odd.InsertParagraph("Автопарк «Копейка»")
+                        .FontSize(12)
+                        .Alignment = Alignment.center;
+
                     if (orderList.Any())
                     {
-                        var table = doc.AddTable(orderList.Count + 1, 11);
+                        var table = doc.AddTable(orderList.Count + 2, 11);
+                        table.Alignment = Alignment.center;
+                        table.Design = TableDesign.TableGrid;
+                        table.Rows[0].Cells[0].Paragraphs.First().Append("Дата начала").Bold();
+                        table.Rows[0].Cells[1].Paragraphs.First().Append("Дата окончания").Bold();
+                        table.Rows[0].Cells[2].Paragraphs.First().Append("Клиент").Bold();
+                        table.Rows[0].Cells[3].Paragraphs.First().Append("Адрес отправления").Bold();
+                        table.Rows[0].Cells[4].Paragraphs.First().Append("Адрес прибытия").Bold();
+                        table.Rows[0].Cells[5].Paragraphs.First().Append("Машина").Bold();
+                        table.Rows[0].Cells[6].Paragraphs.First().Append("Водитель").Bold();
+                        table.Rows[0].Cells[7].Paragraphs.First().Append("Диспетчер").Bold();
+                        table.Rows[0].Cells[8].Paragraphs.First().Append("Тариф").Bold();
+                        table.Rows[0].Cells[9].Paragraphs.First().Append("Дополнительные услуги").Bold();
+                        table.Rows[0].Cells[10].Paragraphs.First().Append("Общая сумма").Bold();
 
-                        table.Rows[0].Cells[0].Paragraphs.First().Append("Дата начала");
-                        table.Rows[0].Cells[1].Paragraphs.First().Append("Дата окончания");
-                        table.Rows[0].Cells[2].Paragraphs.First().Append("Клиент");
-                        table.Rows[0].Cells[3].Paragraphs.First().Append("Адрес отправления");
-                        table.Rows[0].Cells[4].Paragraphs.First().Append("Адрес прибытия");
-                        table.Rows[0].Cells[5].Paragraphs.First().Append("Машина");
-                        table.Rows[0].Cells[6].Paragraphs.First().Append("Водитель");
-                        table.Rows[0].Cells[7].Paragraphs.First().Append("Диспетчер");
-                        table.Rows[0].Cells[8].Paragraphs.First().Append("Тариф");
-                        table.Rows[0].Cells[9].Paragraphs.First().Append("Дополнительные услуги");
-                        table.Rows[0].Cells[10].Paragraphs.First().Append("Общая сумма");
-
+                        decimal totalSum = 0;
                         for (int i = 0; i < orderList.Count; i++)
                         {
                             var order = orderList[i];
                             table.Rows[i + 1].Cells[0].Paragraphs.First().Append(order.DateStart.ToString());
-                            table.Rows[i + 1].Cells[1].Paragraphs.First().Append(order.DateEnd.ToString());
+                            table.Rows[i + 1].Cells[1].Paragraphs.First().Append(order.DateEnd.HasValue ? order.DateEnd.Value.ToString() : "В процессе");
                             table.Rows[i + 1].Cells[2].Paragraphs.First().Append(order.CustomerName);
                             table.Rows[i + 1].Cells[3].Paragraphs.First().Append(order.DepartureAddress);
                             table.Rows[i + 1].Cells[4].Paragraphs.First().Append(order.ArrivalAddress);
@@ -150,18 +156,23 @@ namespace FleetVehicles.Views.Pages
                             table.Rows[i + 1].Cells[7].Paragraphs.First().Append(order.DispatcherName);
                             table.Rows[i + 1].Cells[8].Paragraphs.First().Append(order.TariffName);
                             table.Rows[i + 1].Cells[9].Paragraphs.First().Append(order.AdditionalServices);
-                            table.Rows[i + 1].Cells[10].Paragraphs.First().Append(order.TotalCost.ToString());
+                            table.Rows[i + 1].Cells[10].Paragraphs.First().Append(order.TotalCost.HasValue ? order.TotalCost.Value.ToString() : "0.00");
+                            totalSum += order.TotalCost.HasValue ? order.TotalCost.Value : 0;
                         }
 
+                        table.Rows[orderList.Count + 1].Cells[0].Paragraphs.First().Append("ИТОГО").Bold();
+                        table.Rows[orderList.Count + 1].Cells[10].Paragraphs.First().Append(totalSum.ToString("C")).Bold();
+
                         doc.InsertTable(table);
-                        table.Design = TableDesign.TableGrid;
-                        table.Alignment = Alignment.center;
-                        table.AutoFit = AutoFit.Contents;
                     }
                     else
                     {
                         doc.InsertParagraph("За выбранный период заказы отсутствуют.");
                     }
+
+                    doc.InsertParagraph("\n\n\n\n");
+                    doc.InsertParagraph($"«__» ______ {DateTime.Now.Year}                                            _____/_____________").Alignment = Alignment.left;
+
 
                     doc.Save();
                     MessageBox.Show("Отчет по заказам успешно создан.");
@@ -188,16 +199,20 @@ namespace FleetVehicles.Views.Pages
         {
             using (var doc = DocX.Create(filePath))
             {
-                doc.InsertParagraph("Отчет по автопарку")
-                   .FontSize(16)
-                   .Bold()
-                   .Alignment = Alignment.center;
+                doc.InsertParagraph("Отчет по заказам")
+                       .FontSize(16)
+                       .Bold()
+                       .Alignment = Alignment.center;
 
-                string currentDate = DateTime.Now.ToString("«dd» MMMM yyyy г.");
-                doc.InsertParagraph($"Дата создания отчета: {currentDate}")
-                   .FontSize(12)
-                   .Italic()
-                   .Alignment = Alignment.center;
+                doc.InsertParagraph($"Дата создания отчета: {DateTime.Now:«dd»  MMMM  yyyy}")
+                    .FontSize(12)
+                    .Italic()
+                    .Alignment = Alignment.center;
+
+                doc.AddFooters();
+                doc.Footers.Odd.InsertParagraph("Автопарк «Копейка»")
+                    .FontSize(12)
+                    .Alignment = Alignment.center;
 
                 using (var context = new FleetVehiclesEntities())
                 {
@@ -208,19 +223,21 @@ namespace FleetVehicles.Views.Pages
                         fc.VinNumber,
                         fc.RegistrationNumber,
                         ColorName = fc.CarColor.Name
-                       
                     }).ToList();
 
                     if (fleetCars.Any())
                     {
-                        var table = doc.AddTable(fleetCars.Count + 1, 5);
+                        var table = doc.AddTable(fleetCars.Count + 2, 5);
+                        table.Alignment = Alignment.center;
+                        table.Design = TableDesign.TableGrid;
 
-                        table.Rows[0].Cells[0].Paragraphs.First().Append("Машина");
-                        table.Rows[0].Cells[1].Paragraphs.First().Append("Водитель");
-                        table.Rows[0].Cells[2].Paragraphs.First().Append("VIN номер");
-                        table.Rows[0].Cells[3].Paragraphs.First().Append("Регистрационный номер");
-                        table.Rows[0].Cells[4].Paragraphs.First().Append("Цвет");
+                        table.Rows[0].Cells[0].Paragraphs.First().Append("Машина").Bold();
+                        table.Rows[0].Cells[1].Paragraphs.First().Append("Водитель").Bold();
+                        table.Rows[0].Cells[2].Paragraphs.First().Append("VIN номер").Bold();
+                        table.Rows[0].Cells[3].Paragraphs.First().Append("Регистрационный номер").Bold();
+                        table.Rows[0].Cells[4].Paragraphs.First().Append("Цвет").Bold();
 
+                        int carCount = fleetCars.Count;
                         for (int i = 0; i < fleetCars.Count; i++)
                         {
                             var car = fleetCars[i];
@@ -231,16 +248,20 @@ namespace FleetVehicles.Views.Pages
                             table.Rows[i + 1].Cells[4].Paragraphs.First().Append(car.ColorName);
                         }
 
+                        table.Rows[fleetCars.Count + 1].Cells[0].Paragraphs.First().Append("ИТОГО").Bold();
+                        table.Rows[fleetCars.Count + 1].Cells[4].Paragraphs.First().Append(carCount.ToString()).Bold();
+
                         doc.InsertTable(table);
-                        table.Design = TableDesign.TableGrid;
-                        table.Alignment = Alignment.center;
-                        table.AutoFit = AutoFit.Contents;
                     }
                     else
                     {
                         doc.InsertParagraph("Нет данных об автомобилях для отображения.");
                     }
                 }
+
+                doc.InsertParagraph("\n\n\n\n");
+                doc.InsertParagraph($"«__» ______ {DateTime.Now.Year}                                          _____/_____________").Alignment = Alignment.left;
+
 
                 doc.Save();
                 MessageBox.Show("Отчет по автопарку успешно создан.");
