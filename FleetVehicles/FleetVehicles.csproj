@@ -188,6 +188,9 @@
     <Compile Include="Views\Cards\FleetCarCard.xaml.cs">
       <DependentUpon>FleetCarCard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Cards\FreeCarsCard.xaml.cs">
+      <DependentUpon>FreeCarsCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Cards\InsurancePolicyCard.xaml.cs">
       <DependentUpon>InsurancePolicyCard.xaml</DependentUpon>
     </Compile>
@@ -298,6 +301,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Cards\FreeCarsCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Cards\InsurancePolicyCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -354,6 +361,7 @@
       <DependentUpon>Database.edmx</DependentUpon>
       <LastGenOutput>Database.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\view.png" />
     <Resource Include="Resources\client.png" />
     <Resource Include="Resources\employees.png" />
     <Resource Include="Resources\logout.png" />

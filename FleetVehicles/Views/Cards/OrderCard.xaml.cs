@@ -109,11 +109,18 @@ namespace FleetVehicles.Views.Cards
                 c.PhoneNumber
             }).ToList();
 
-            FleetCarComboBox.ItemsSource = _context.FleetCars.Select(fc => new
-            {
-                fc.IdFleetCar,
-                CarInfo = fc.Cars.CarModel.Name + " " + fc.Cars.CarModel.CarBrand.Name
-            }).ToList();
+            var availableCars = _context.FleetCars
+                .Where(fc => !_context.Orders
+                .Any(o => o.FleetCars.IdDriver == fc.IdDriver && o.DateEnd == null))
+                .Select(fc => new
+                {
+                    fc.IdFleetCar,
+                    CarInfo = fc.Cars.CarModel.Name + " " + fc.Cars.CarModel.CarBrand.Name
+                })
+                .ToList();
+
+            FleetCarComboBox.ItemsSource = availableCars;
+
 
             TariffComboBox.ItemsSource = _context.Tariff.Select(t => new
             {
@@ -352,6 +359,12 @@ namespace FleetVehicles.Views.Cards
             CustomerCard card = new CustomerCard();
             card.Closed += (s, args) => LoadComboBoxData();
             card.ShowDialog();
+        }
+
+        private void ShowFreeCar_Click(object sender, RoutedEventArgs e)
+        {
+            FreeCarsCard freeCarsCard = new FreeCarsCard();
+            freeCarsCard.ShowDialog();
         }
     }
 }

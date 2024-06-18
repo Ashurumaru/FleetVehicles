@@ -51,7 +51,7 @@ namespace FleetVehicles.Views
 
         private void CarsPage_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new ManagementCarPage(_currentUserId));
+            MainFrame.Navigate(new ManagementCarPage(_currentUserId, false));
 
         }
 

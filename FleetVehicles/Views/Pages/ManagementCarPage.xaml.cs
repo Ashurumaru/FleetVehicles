@@ -24,12 +24,14 @@ namespace FleetVehicles.Views.Pages
     public partial class ManagementCarPage : Page
     {
         private int _currentUserId;
+        private bool? _carFilter;
 
-        public ManagementCarPage(int currentUserId)
+        public ManagementCarPage(int currentUserId, bool? carFilter)
         {
             InitializeComponent();
-            LoadFleetCarsData();
+            _carFilter = carFilter;
             _currentUserId = currentUserId;
+            LoadFleetCarsData();
         }
 
         private void LoadFleetCarsData(string searchQuery = "")
@@ -47,6 +49,7 @@ namespace FleetVehicles.Views.Pages
                                      FleetCarID = fleetCar.IdFleetCar,
                                      CarModel = carModel.Name,
                                      CarBrand = carBrand.Name,
+                                     IdDriver = driver.IdEmployee,
                                      DriverFirstName = driver.FirstName,
                                      DriverLastName = driver.LastName,
                                      DriverPatronymic = driver.Patronymic,
@@ -54,6 +57,12 @@ namespace FleetVehicles.Views.Pages
                                      RegistrationNumber = fleetCar.RegistrationNumber,
                                      ColorName = color.Name
                                  }).ToList();
+
+                if (_carFilter == true)
+                {
+                    fleetCars = fleetCars.Where(fc => !context.Orders
+                        .Any(o => o.FleetCars.IdDriver == fc.IdDriver && o.DateEnd == null)).ToList();
+                }
 
                 if (!string.IsNullOrWhiteSpace(searchQuery))
                 {
